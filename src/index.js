@@ -10,11 +10,13 @@ const path = require('path');
  */
 module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '') {
 
-    mountDir(rootDir);
+    const normalizedRootDir = path.normalize(`${process.cwd()}${path.sep}${rootDir}`);
+
+    mountDir(normalizedRootDir);
 
     function mountDir(dirPath) {
         fs.readdirSync(dirPath).forEach(filename => {
-            const filePath = `${dirPath}/${filename}`;
+            const filePath = `${dirPath}${path.sep}${filename}`;
             const stat = fs.statSync(filePath);
             if (stat.isDirectory()) {
                 mountDir(filePath);
@@ -27,7 +29,9 @@ module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '')
 
     function mountFile(filePath) {
         const dirname = path.dirname(filePath);
-        const requestPath = dirname.startsWith(rootDir) ? dirname.substr(rootDir.length) : dirname;
+        const requestPath = (dirname.startsWith(normalizedRootDir) ? dirname.substr(normalizedRootDir.length) : dirname)
+        // Windows
+            .replace('\\', '/');
 
         const filename = path.basename(filePath, '.js');
         const isIndex = filename.toLowerCase() === 'index';
