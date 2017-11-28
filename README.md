@@ -5,7 +5,7 @@ Recursively configure Express.js routes in a folder
 # Usage
 
 ```js
-const routeUtils = require('./route-utils');
+const routeUtils = require('express-recursive-routes');
 routeUtils.mountRoutes(app, './my-routes-folder', '/api');
 ```
 
