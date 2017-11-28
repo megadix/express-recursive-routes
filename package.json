@@ -1,0 +1,17 @@
+{
+  "name": "express-recursive-routes",
+  "version": "1.0.0",
+  "description": "Recursively configure Express.js routes in a folder",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/megadix/express-recursive-routes.git"
+  },
+  "author": "Dimitri De Franciscis <dimitri@megadix.it> (https://www.megadix.it/)",
+  "license": "MIT",
+  "keywords": ["express", "node", "routing", "controller"],
+  "homepage": "https://github.com/megadix/express-recursive-routes",
+  "bugs" : {
+    "url": "https://github.com/megadix/express-recursive-routes/issues"
+  }
+}
