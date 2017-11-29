@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const fs = require('fs');
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
@@ -90,6 +91,9 @@ describe('recursiveRoutes', function () {
 
     it('empty dir', function () {
         const recursiveRoutes = require('../src/index');
+        if (!fs.existsSync('./test/empty')) {
+            fs.mkdir('./test/empty');
+        }
         recursiveRoutes.mountRoutes(mock_app, './test/empty');
         expect(mock_app.use.getCalls().length).to.equal(0);
     });
