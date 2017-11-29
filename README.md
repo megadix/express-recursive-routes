@@ -15,3 +15,11 @@ If your routes are under `./routes` directory and you want to map them directly 
 ```js
 routeUtils.mountRoutes(app);
 ```
+
+# Development
+
+Commit using `commitizen`:
+
+```
+npm run commit
+```

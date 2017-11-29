@@ -2,6 +2,8 @@ const _ = require('lodash');
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
+const testUtils = require('./testUtils');
+
 describe('recursiveRoutes', function () {
 
     const sandbox = sinon.createSandbox();
@@ -90,6 +92,70 @@ describe('recursiveRoutes', function () {
         const recursiveRoutes = require('../src/index');
         recursiveRoutes.mountRoutes(mock_app, './test/empty');
         expect(mock_app.use.getCalls().length).to.equal(0);
+    });
+
+    describe('filtering', function () {
+
+        let rootDir;
+        let filter;
+        let expectedRoutes;
+
+        it('.route.js', function () {
+            rootDir = 'test/filter1';
+            filter = {substring: '.route.js'};
+            expectedRoutes = new Set([
+                '/',
+                '/include-me',
+                '/folder1/',
+                '/folder1/include-me'
+            ]);
+        });
+
+        it('.route.js, exclude index.js', function () {
+            rootDir = 'test/filter1';
+            filter = {substring: '.route.js', includeIndex: false};
+            expectedRoutes = new Set([
+                '/include-me',
+                '/folder1/include-me'
+            ]);
+        });
+
+        it('route.', function () {
+            rootDir = 'test/filter2';
+            filter = {substring: 'route.'};
+            expectedRoutes = new Set([
+                '/',
+                '/include-me',
+                '/folder1/',
+                '/folder1/include-me'
+            ]);
+        });
+
+        it('route., exclude index.js', function () {
+            rootDir = 'test/filter2';
+            filter = {substring: 'route.', includeIndex: false};
+            expectedRoutes = new Set([
+                '/include-me',
+                '/folder1/include-me'
+            ]);
+        });
+
+        afterEach(function () {
+            const recursiveRoutes = require('../src/index');
+            recursiveRoutes.mountRoutes(mock_app, rootDir, null, filter);
+
+            const app_use_calls = mock_app.use.getCalls();
+
+            const checkRoutes = new Set(
+                _(app_use_calls)
+                    .map('args')
+                    .map(args => args[0])
+                    .value()
+            );
+
+            expect(testUtils.eqSet(checkRoutes, expectedRoutes)).to.be.true;
+        });
+
     });
 
 });

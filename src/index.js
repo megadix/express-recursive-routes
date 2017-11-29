@@ -13,15 +13,22 @@ const path = require('path');
  * // basePath = ''
  * mountRoutes(app);
  *
- * @param app Express.js app object
- * @param rootDir
- * @param basePath
+ * @param {Object} app Express.js app object
+ * @param {String} [rootDir]
+ * @param {String} [basePath]
+ * @param {Object} [filter] Filter object
+ * @param {String} [filter.substring='.js']
+ * @param {Boolean} [filter.includeIndex=true] include `index.js`
  */
-module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '') {
+module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '', filter = {}) {
+
+    filter.substring = filter.substring || '.js';
+    if (typeof filter.includeIndex === 'undefined') {
+        filter.includeIndex = true;
+    }
 
     rootDir = _stripTrailingSlash(rootDir);
     const normalizedRootDir = path.normalize(`${process.cwd()}${path.sep}${rootDir}`);
-
     basePath = _addLeadingSlash(_stripTrailingSlash(basePath));
 
     mountDir(normalizedRootDir);
@@ -36,6 +43,7 @@ module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '')
             else if (stat.isFile() && filename.endsWith('.js')) {
                 mountFile(filePath);
             }
+
         });
     }
 
@@ -44,10 +52,29 @@ module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '')
         const requestPath = (dirname.startsWith(normalizedRootDir) ? dirname.substr(normalizedRootDir.length) : dirname)
             .replace('\\', '/'); // Windows-only
 
-        const filename = path.basename(filePath, '.js');
-        const isIndex = filename.toLowerCase() === 'index';
+        const filename = path.basename(filePath);
+        const isIndex = filename.toLowerCase() === 'index.js';
 
-        const routePath = `${basePath}${requestPath}/${isIndex ? '' : filename}`;
+        if (isIndex && !filter.includeIndex) {
+            return;
+        }
+
+        let filePathPart = filename;
+
+        if (!isIndex && filename.indexOf(filter.substring) < 0) {
+            return;
+        }
+
+        if (!isIndex) {
+            filePathPart = filePathPart.replace(filter.substring, '');
+        }
+
+        if (filePathPart.endsWith('.js')) {
+            filePathPart = filePathPart.substr(0, filePathPart.length - 3);
+        }
+
+
+        const routePath = `${basePath}${requestPath}/${isIndex ? '' : filePathPart}`;
         app.use(routePath, require(filePath));
     }
 
@@ -55,7 +82,7 @@ module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '')
 
 function _cleanString(s) {
     if (!s) {
-        return s;
+        return '';
     }
     return s.trim();
 }
