@@ -87,6 +87,28 @@ describe('recursiveRoutes', function () {
             });
 
         });
+
+    });
+
+    it('custom basePath only', function () {
+        const recursiveRoutes = require('../src/index');
+        recursiveRoutes.mountRoutes(mock_app, null, '/customPath');
+
+        const app_use_calls = mock_app.use.getCalls();
+
+        const checkRoutes = new Set(
+            _(app_use_calls)
+                .map('args')
+                .map(args => args[0])
+                .value()
+        );
+
+        expect(checkRoutes.size).to.equal(5);
+        expect(checkRoutes.has('/customPath/')).to.be.true;
+        expect(checkRoutes.has('/customPath/other')).to.be.true;
+        expect(checkRoutes.has('/customPath/test-1/')).to.be.true;
+        expect(checkRoutes.has('/customPath/test-2/controller-1')).to.be.true;
+        expect(checkRoutes.has('/customPath/test-2/controller-2')).to.be.true;
     });
 
     it('empty dir', function () {

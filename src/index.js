@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
+module.exports.DEFAULT_ROOT_DIR = './routes';
+module.exports.DEFAULT_BASE_PATH = '';
+module.exports.DEFAULT_FILTER = '.js';
+
 /**
  * Recursively mount all routes.
  *
@@ -18,7 +22,14 @@ const path = require('path');
  * @param {String} [basePath]
  * @param {String} filter Include files that match substring
  */
-module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '', filter = '.js') {
+module.exports.mountRoutes = function (app,
+                                       rootDir = module.exports.DEFAULT_ROOT_DIR,
+                                       basePath = module.exports.DEFAULT_BASE_PATH,
+                                       filter = module.exports.DEFAULT_FILTER) {
+
+    rootDir = rootDir || './routes';
+    basePath = basePath || '';
+    filter = filter || '.js';
 
     rootDir = _stripTrailingSlash(rootDir);
     const normalizedRootDir = path.normalize(`${process.cwd()}${path.sep}${rootDir}`);
@@ -33,7 +44,7 @@ module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '',
             if (stat.isDirectory()) {
                 mountDir(filePath);
             }
-            else if (stat.isFile() && filename.endsWith('.js')) {
+            else if (stat.isFile() && filename.toLowerCase().endsWith('.js')) {
                 mountFile(filePath);
             }
 
