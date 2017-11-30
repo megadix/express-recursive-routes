@@ -111,15 +111,6 @@ describe('recursiveRoutes', function () {
         expect(checkRoutes.has('/customPath/test-2/controller-2')).to.be.true;
     });
 
-    it('empty dir', function () {
-        const recursiveRoutes = require('../src/index');
-        if (!fs.existsSync('./test/empty')) {
-            fs.mkdir('./test/empty');
-        }
-        recursiveRoutes.mountRoutes(mock_app, './test/empty');
-        expect(mock_app.use.getCalls().length).to.equal(0);
-    });
-
     describe('filtering', function () {
 
         let rootDir;
