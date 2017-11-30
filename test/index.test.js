@@ -106,40 +106,22 @@ describe('recursiveRoutes', function () {
 
         it('.route.js', function () {
             rootDir = 'test/filter1';
-            filter = {substring: '.route.js'};
+            filter = '.route.js';
             expectedRoutes = new Set([
                 '/',
                 '/include-me',
                 '/folder1/',
-                '/folder1/include-me'
-            ]);
-        });
-
-        it('.route.js, exclude index.js', function () {
-            rootDir = 'test/filter1';
-            filter = {substring: '.route.js', includeIndex: false};
-            expectedRoutes = new Set([
-                '/include-me',
                 '/folder1/include-me'
             ]);
         });
 
         it('route.', function () {
             rootDir = 'test/filter2';
-            filter = {substring: 'route.'};
+            filter = 'route.';
             expectedRoutes = new Set([
                 '/',
                 '/include-me',
                 '/folder1/',
-                '/folder1/include-me'
-            ]);
-        });
-
-        it('route., exclude index.js', function () {
-            rootDir = 'test/filter2';
-            filter = {substring: 'route.', includeIndex: false};
-            expectedRoutes = new Set([
-                '/include-me',
                 '/folder1/include-me'
             ]);
         });

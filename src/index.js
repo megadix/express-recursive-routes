@@ -16,16 +16,9 @@ const path = require('path');
  * @param {Object} app Express.js app object
  * @param {String} [rootDir]
  * @param {String} [basePath]
- * @param {Object} [filter] Filter object
- * @param {String} [filter.substring='.js']
- * @param {Boolean} [filter.includeIndex=true] include `index.js`
+ * @param {String} filter Include files that match substring
  */
-module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '', filter = {}) {
-
-    filter.substring = filter.substring || '.js';
-    if (typeof filter.includeIndex === 'undefined') {
-        filter.includeIndex = true;
-    }
+module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '', filter = '.js') {
 
     rootDir = _stripTrailingSlash(rootDir);
     const normalizedRootDir = path.normalize(`${process.cwd()}${path.sep}${rootDir}`);
@@ -53,27 +46,24 @@ module.exports.mountRoutes = function (app, rootDir = './routes', basePath = '',
             .replace('\\', '/'); // Windows-only
 
         const filename = path.basename(filePath);
-        const isIndex = filename.toLowerCase() === 'index.js';
-
-        if (isIndex && !filter.includeIndex) {
-            return;
-        }
 
         let filePathPart = filename;
 
-        if (!isIndex && filename.indexOf(filter.substring) < 0) {
+        if (filename.indexOf(filter) < 0) {
             return;
         }
 
-        if (!isIndex) {
-            filePathPart = filePathPart.replace(filter.substring, '');
-        }
+        // remove pattern from route path
+        filePathPart = filePathPart.replace(filter, '');
 
         if (filePathPart.endsWith('.js')) {
+            // remove trailing .js if the path matched start of the string
             filePathPart = filePathPart.substr(0, filePathPart.length - 3);
         }
 
+        const isIndex = filePathPart.toLowerCase() === 'index';
 
+        // combine path segments
         const routePath = `${basePath}${requestPath}/${isIndex ? '' : filePathPart}`;
         app.use(routePath, require(filePath));
     }
