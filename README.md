@@ -58,5 +58,5 @@ routeUtils.mountRoutes(app, null, '/api');
 Commit using `commitizen`:
 
 ```
-npm run commit
+yarn run commit
 ```
