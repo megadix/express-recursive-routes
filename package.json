@@ -6,7 +6,7 @@
   "scripts": {
     "commit": "git-cz",
     "test": "mocha",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
     "lodash": "^4.17.11",
     "mocha": "^5.2.0",
     "proxyquire": "^2.1.0",
-    "semantic-release": "^8.2.0",
+    "semantic-release": "^15.13.3",
     "sinon": "^7.2.3"
   },
   "config": {

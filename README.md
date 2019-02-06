@@ -55,7 +55,14 @@ routeUtils.mountRoutes(app, null, '/api');
 
 # Development
 
-Commit using `commitizen`:
+Install `semantic-release-cli`:
+
+```
+npm install -g semantic-release-cli
+semantic-release-cli setup
+```
+
+
 
 ```
 yarn run commit
