@@ -58,7 +58,7 @@ module.exports.mountRoutes = function (app,
         logger.debug(`Mounting file = ${filePath}`);
         const dirname = path.dirname(filePath);
         const requestPath = (dirname.startsWith(normalizedRootDir) ? dirname.substr(normalizedRootDir.length) : dirname)
-            .replace('\\', '/'); // Windows-only
+            .replace(/\\/g, '/'); // Windows-only
 
         const filename = path.basename(filePath);
 
