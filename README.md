@@ -32,6 +32,15 @@ If your setup is different, you can pass configuration parameters to `mountRoute
   - strips `filter` from route path
   - it *always* strips the trailing `.js` suffix
 
+### Logging
+
+You can activate various logging levels setting `EXPRESS_RECURSIVE_ROUTES_LOG_LEVEL` environment variable. Valid values are:
+
+- `ERROR` (default)
+- `WARN`
+- `INFO`
+- `DEBUG`
+
 ### Example 1: custom routes folder
 
 If your routes files are stored in a folder different from `routes`, for example:  

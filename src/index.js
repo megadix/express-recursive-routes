@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const logger = require('./logger');
+
 module.exports.DEFAULT_ROOT_DIR = './routes';
 module.exports.DEFAULT_BASE_PATH = '';
 module.exports.DEFAULT_FILTER = '.js';
@@ -38,6 +40,7 @@ module.exports.mountRoutes = function (app,
     mountDir(normalizedRootDir);
 
     function mountDir(dirPath) {
+        logger.debug(`Mounting dir  = ${dirPath}`);
         fs.readdirSync(dirPath).forEach(filename => {
             const filePath = `${dirPath}${path.sep}${filename}`;
             const stat = fs.statSync(filePath);
@@ -52,6 +55,7 @@ module.exports.mountRoutes = function (app,
     }
 
     function mountFile(filePath) {
+        logger.debug(`Mounting file = ${filePath}`);
         const dirname = path.dirname(filePath);
         const requestPath = (dirname.startsWith(normalizedRootDir) ? dirname.substr(normalizedRootDir.length) : dirname)
             .replace('\\', '/'); // Windows-only
