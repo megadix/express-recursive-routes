@@ -78,10 +78,12 @@ describe('recursiveRoutes', function () {
                         .value()
                 );
 
-                expect(checkRoutes.size).to.equal(5);
+                expect(checkRoutes.size).to.equal(7);
                 expect(checkRoutes.has('/customPath/')).to.be.true;
                 expect(checkRoutes.has('/customPath/other')).to.be.true;
                 expect(checkRoutes.has('/customPath/test-1/')).to.be.true;
+                expect(checkRoutes.has('/customPath/test-1/test-1.1/')).to.be.true;
+                expect(checkRoutes.has('/customPath/test-1/test-1.1/other')).to.be.true;
                 expect(checkRoutes.has('/customPath/test-2/controller-1')).to.be.true;
                 expect(checkRoutes.has('/customPath/test-2/controller-2')).to.be.true;
             });
