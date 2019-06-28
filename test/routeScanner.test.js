@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const expect = require('chai').expect;
 const path = require('path');
 const mockFs = require('mock-fs');
@@ -18,8 +17,6 @@ describe('routeScanner', function() {
     controllers.forEach(controller => {
       const src = path.relative('./routes', controller.src).replace(/\\/g, '/');
       checkRoutes.set(controller.path, src);
-      const instance = require(controller.src);
-      expect(instance).not.to.be.null;
     });
 
     return checkRoutes;
