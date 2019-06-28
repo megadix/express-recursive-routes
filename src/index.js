@@ -25,7 +25,6 @@ module.exports.mountRoutes = function (app,
                                        rootDir = module.exports.DEFAULT_ROOT_DIR,
                                        basePath = module.exports.DEFAULT_BASE_PATH,
                                        filter = module.exports.DEFAULT_FILTER) {
-    console.log("POMODORO");
     const routes = routeScanner.scanRoutes(rootDir, basePath, filter);
     routes.forEach(route => {
         app.use(route.path, require(route.src));
