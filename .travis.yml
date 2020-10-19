@@ -10,8 +10,6 @@ node_js:
   - 12
   - 13
   - 14
-script:
-  - npm run test
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
