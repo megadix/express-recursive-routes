@@ -6,8 +6,6 @@ const index = require('../src/index');
 const routeScanner = require('../src/routeScanner');
 
 describe('routeScanner', function() {
-  // component under test
-
   afterEach(function() {
     mockFs.restore();
   });
@@ -24,7 +22,6 @@ describe('routeScanner', function() {
 
   describe('scanRoutes()', function() {
     it('default parameters', function() {
-
       mockFs({
         'routes': {
           'test-1': {
