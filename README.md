@@ -74,5 +74,5 @@ semantic-release-cli setup
 Commit using `commit` script ([commit-zen](https://github.com/commitizen/cz-cli)):
 
 ```
-yarn run commit
+npm run commit
 ```
