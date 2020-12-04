@@ -28,6 +28,7 @@ module.exports.mountRoutes = function (app,
                                        filter = module.exports.DEFAULT_FILTER) {
     assert(app, 'app parameter is null or undefined');
     const routes = routeScanner.scanRoutes(rootDir, basePath, filter);
+    
     routes.forEach(route => {
         app.use(route.path, require(route.src));
     });
