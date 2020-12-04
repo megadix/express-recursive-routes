@@ -1,6 +1,6 @@
 # express-recursive-routes
 
-Recursively configure Express.js routes in a folder
+Recursively configure Express.js routes in a folder. It uses sensible defaults (filenames) but can be easily customized.
 
 # Usage
 
