@@ -4,7 +4,14 @@ Recursively configure Express.js routes in a folder. It uses sensible defaults (
 
 # Usage
 
+For more examples see the examples repository:  
+[express-recursive-routes-example](https://github.com/megadix/express-recursive-routes-example)
+
+### Old way (express-generator)
+
 [express-generator](https://www.npmjs.com/package/express-generator) creates routes under `/routes` folder, but you have to manually register routes like this:
+
+`app.js`:
 
 ```js
 var index = require('./routes/index');
@@ -14,12 +21,46 @@ app.use('/', index);
 app.use('/users', users);
 ```
 
+### ✨ New way: `express-recursive-routes`
+
 With `express-recursive-routes` you can let function `mountRoutes()` do the magic:
+
+`app.js`:
 
 ```js
 const routeUtils = require('express-recursive-routes');
 routeUtils.mountRoutes(app);
 ```
+
+Then, under `/routes` (default - see *Configuration* below):
+
+`index.js` will be mounted under `/`
+
+```js
+var express = require('express');
+var router = express.Router();
+
+router.get('/', (req, res) => {
+  res.send('Hello from /')
+});
+
+module.exports = router;
+```
+
+`users.js` will be mounted under `/users` 
+
+```js
+var express = require('express');
+var router = express.Router();
+
+router.get('/', (req, res) => {
+  res.send('Hello from /users/')
+});
+
+module.exports = router;
+```
+
+etc...
 
 ## Configuration
 
